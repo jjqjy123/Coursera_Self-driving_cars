@@ -119,5 +119,6 @@ def slope():
 
     plt.plot(t_data, x_data)
     plt.show()
+    
 #flat()
 slope()
