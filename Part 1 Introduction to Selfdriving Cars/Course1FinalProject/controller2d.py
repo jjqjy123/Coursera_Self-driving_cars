@@ -241,7 +241,7 @@ class Controller2D(object):
                 # Calculate target point 
                 steer_output = direction*np.arctan(2*L*np.sin(alpha)/Ld)
             
-            elif method == 1:                      # Stanley Controller
+            elif method == 1:                   # Stanley Controller
                 k = 1                           # To be adjustabel parameters 
                 ks = 0
                 # Calculate lambda between direction of car and waypoints
@@ -254,7 +254,7 @@ class Controller2D(object):
                 dot_product = a_vector[0]*b_vector[0] + a_vector[1]*b_vector[1]
                 heading_error = np.arccos(dot_product/(a_distance*b_distance))   
 
-                # Calculate direction of lambda, a_vector × b_vector = x1y2 - x2y1
+                # Calculate direction of heading error, a_vector × b_vector = x1y2 - x2y1
                 cross_product1 = a_vector[0]*b_vector[1] - a_vector[1]*b_vector[0]
                 if cross_product1 >= 0:
                     direction1 = -1
@@ -263,7 +263,7 @@ class Controller2D(object):
                 # Calculate heading error
                 heading_angle = direction1*heading_error
 
-                # Calculate crosscrack error, use (y-y2)/(y1-y2)=(x-x2)/(x1-x2) and e = (a*xc + b*yc +c)/sqrt(a**2 +b**2)
+                # Calculate crosscrack error and direction, use (y-y2)/(y1-y2)=(x-x2)/(x1-x2) and e = (a*xc + b*yc +c)/sqrt(a**2 +b**2)
                 c_vector = [waypoints[1][0]-x, waypoints[1][1]-y]
                 cross_product2 = b_vector[0]*c_vector[1] - b_vector[1]*c_vector[0]
                 if cross_product2 >= 0:
@@ -277,7 +277,7 @@ class Controller2D(object):
                 crosstrack_angle = direction2*np.arctan(k*crosstrack_error/(v + ks))
                            
                 steer_output = crosstrack_angle + heading_angle
-                if steer_output>0:
+                if steer_output > 0:
                     steer_output = min(steer_output, 1.22)
                 else:
                     steer_output = max(steer_output, -1.22)
